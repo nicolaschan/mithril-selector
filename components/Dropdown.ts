@@ -37,9 +37,8 @@ function displayOption(filter: string): (str: string) => m.Lifecycle<{}, {}> {
 export default {
   view (vnode: m.Vnode<Attrs>) {
     if (!vnode.attrs.visible) { return }
-    const availableOptions = vnode.attrs.options
+    return vnode.attrs.options
       .filter(includesNoCase(vnode.attrs.filter))
-    return availableOptions
       .map(displayOption(vnode.attrs.filter))
   }
 } as m.Component<Attrs>
