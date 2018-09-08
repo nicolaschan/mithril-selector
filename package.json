@@ -1,0 +1,22 @@
+{
+  "name": "mithril-selector",
+  "version": "1.0.0",
+  "description": "Mithril select element with auto-complete as you type",
+  "main": "index.js",
+  "repository": "git@github.com:nicolaschan/mithril-selector.git",
+  "author": "Nicolas Chan <nicolas@nicolaschan.com>",
+  "license": "MIT",
+  "scripts": {
+    "build-example": "cd example && ../node_modules/.bin/webpack --config webpack.config.js"
+  },
+  "dependencies": {
+    "@types/mithril": "^1.1.12",
+    "mithril": "^1.1.6"
+  },
+  "devDependencies": {
+    "ts-loader": "^5.0.0",
+    "typescript": "^3.0.3",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0"
+  }
+}
