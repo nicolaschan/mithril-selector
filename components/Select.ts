@@ -3,7 +3,8 @@ import Dropdown from './Dropdown'
 
 interface Attrs {
   placeholder?: string,
-  options: Array<string>
+  options: Array<string>,
+  onselect: (value: string) => void
 }
 
 interface State {

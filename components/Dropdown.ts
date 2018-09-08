@@ -14,7 +14,7 @@ function includesNoCase(filter: string = ''): (str: string) => boolean {
 
 function matchIndex(filter: string, str: string): [number, number] {
   const startIndex = str.toLowerCase().indexOf(filter.trim().toLowerCase())
-  const endIndex = startIndex + ((startIndex < 0) ? 0 : filter.length)
+  const endIndex = startIndex + ((startIndex < 0) ? 0 : filter.trim().length)
   return [startIndex, endIndex]
 }
 
@@ -25,7 +25,8 @@ function displayOption(filter: string): (str: string) => m.Lifecycle<{}, {}> {
       str.substring(0, startIndex),
       m('span', {
         style: {
-          'font-weight': 600
+          'font-weight': 600,
+          'background-color': 'yellow'
         }
       }, str.substring(startIndex, endIndex)),
       str.substring(endIndex)
@@ -36,8 +37,9 @@ function displayOption(filter: string): (str: string) => m.Lifecycle<{}, {}> {
 export default {
   view (vnode: m.Vnode<Attrs>) {
     if (!vnode.attrs.visible) { return }
-    return vnode.attrs.options
+    const availableOptions = vnode.attrs.options
       .filter(includesNoCase(vnode.attrs.filter))
+    return availableOptions
       .map(displayOption(vnode.attrs.filter))
   }
 } as m.Component<Attrs>
