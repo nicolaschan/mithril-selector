@@ -1,8 +1,10 @@
 @import 'positions';
 @import 'colors';
 
-$font-size: 1em;
+$font-size: 1.1em;
 $font-family: Roboto, Helvetica, sans-serif;
+
+$padding: 0.5em;
 
 .selector {
   font-size: $font-size;
@@ -14,7 +16,7 @@ $font-family: Roboto, Helvetica, sans-serif;
 
   input {
     font-size: $font-size;
-    padding: 0.25em;
+    padding: $padding;
     border-radius: 0;
     border: 1px solid #ddd;
     width: 16em;
@@ -26,6 +28,7 @@ $font-family: Roboto, Helvetica, sans-serif;
   }
 
   .selector-dropdown-element {
-    padding: 0.25em;
+    padding: $padding;
+    font-size: $font-size;
   }
 }
