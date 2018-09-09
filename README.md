@@ -9,7 +9,10 @@ const Component = {
   view: function (vnode) {
     return m(Select, {
       placeholder: 'City',
-      options: ['Mountain View', 'Los Altos', 'Palo Alto']
+      options: ['Mountain View', 'Los Altos', 'Palo Alto'],
+      onselect: value => {
+        // handle value selection change
+      }
     })
   }
 }
