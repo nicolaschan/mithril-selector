@@ -77,7 +77,8 @@ export default {
       spellcheck: false,
       class: (options.length > 0) ? undefined : 'selector-textbox-invalid',
       style: {
-        'font-weight': (vnode.state.typing) ? 400 : 600
+        'font-weight': (vnode.state.typing) ? 400 : 600,
+        cursor: 'pointer'
       },
       placeholder: vnode.attrs.placeholder,
       oninput: m.withAttr('value', value => {
@@ -87,6 +88,12 @@ export default {
         }
       }),
       value: vnode.state.filter,
+      onmousedown: (e: any) => {
+        if (vnode.state.focused) {
+          e.target.blur()
+          e.preventDefault()
+        }
+      },
       onfocus: (e: any) => {
         vnode.state.focused = true
       },
