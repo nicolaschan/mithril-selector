@@ -64,6 +64,9 @@ export default {
     const options = (vnode.state.typing) ?
       vnode.attrs.options.filter(includesNoCase(vnode.state.filter)) :
       vnode.attrs.options
+    if (options.indexOf(vnode.state.hover) < 0) {
+      vnode.state.hover = options[0]
+    }
     return m('.selector', [m('input[type=text]', {
       style: {
         'font-weight': (vnode.state.typing) ? 400 : 600
