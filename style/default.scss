@@ -1,32 +1,24 @@
+@import 'positions';
+
 $highlight-color: yellow;
 $hover-color: #ddd;
 $invalid-color: red;
 
 .selector {
-  position: fixed;
-}
+  .selector-textbox-invalid {
+    color: $invalid-color;
+  }
 
-.selector-textbox-invalid {
-  color: $invalid-color;
-}
+  .selector-dropdown-element {
+    cursor: pointer;
+  }
+  
+  .selector-dropdown-element-hover {
+    background-color: $hover-color;
+  }
 
-.selector-dropdown {
-  width: 100%;
-  background-color: #fafafa;
-  position: absolute;
-  overflow-y: auto;
-  line-height: 2.5ex;
-  max-height: 12.5ex;
-}
-
-.selector-dropdown-element {
-  cursor: pointer;
-}
-.selector-dropdown-element-hover {
-  background-color: $hover-color;
-}
-
-.selector-dropdown-highlight {
-  background-color: $highlight-color;
-  font-weight: 600;
+  .selector-dropdown-highlight {
+    background-color: $highlight-color;
+    font-weight: 600;
+  }
 }
