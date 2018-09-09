@@ -7,13 +7,15 @@
   "author": "Nicolas Chan <nicolas@nicolaschan.com>",
   "license": "MIT",
   "scripts": {
-    "build-example": "cd example && ../node_modules/.bin/webpack --config webpack.config.js"
+    "build-example": "yarn build-css && cd example && ../node_modules/.bin/webpack --config webpack.config.js",
+    "build-css": "sass style/default.scss style/bin/default.css"
   },
   "dependencies": {
     "@types/mithril": "^1.1.12",
     "mithril": "^1.1.6"
   },
   "devDependencies": {
+    "sass": "^1.13.2",
     "ts-loader": "^5.0.0",
     "typescript": "^3.0.3",
     "webpack": "^4.17.2",

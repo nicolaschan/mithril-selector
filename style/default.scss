@@ -1,0 +1,27 @@
+$highlight-color: yellow;
+$hover-color: #ddd;
+
+.selector {
+  position: fixed;
+}
+
+.selector-dropdown {
+  width: 100%;
+  background-color: #fafafa;
+  position: absolute;
+  overflow-y: auto;
+  line-height: 2.5ex;
+  max-height: 12.5ex;
+}
+
+.selector-dropdown-element {
+  cursor: pointer;
+}
+.selector-dropdown-element-hover {
+  background-color: $hover-color;
+}
+
+.selector-dropdown-highlight {
+  background-color: $highlight-color;
+  font-weight: 600;
+}

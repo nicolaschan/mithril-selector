@@ -1,0 +1,27 @@
+.selector {
+  position: fixed;
+}
+
+.selector-dropdown {
+  width: 100%;
+  background-color: #fafafa;
+  position: absolute;
+  overflow-y: auto;
+  line-height: 2.5ex;
+  max-height: 12.5ex;
+}
+
+.selector-dropdown-element {
+  cursor: pointer;
+}
+
+.selector-dropdown-element-hover {
+  background-color: #ddd;
+}
+
+.selector-dropdown-highlight {
+  background-color: yellow;
+  font-weight: 600;
+}
+
+/*# sourceMappingURL=default.css.map */

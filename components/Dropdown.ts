@@ -4,7 +4,9 @@ interface Attrs {
   visible: boolean,
   options: Array<string>,
   filter: string,
-  onselect: (value: string) => void
+  onselect: (value: string) => void,
+  onhover: (value: string) => void,
+  hover: string
 }
 
 function matchIndex(filter: string, str: string): [number, number] {
@@ -13,31 +15,36 @@ function matchIndex(filter: string, str: string): [number, number] {
   return [startIndex, endIndex]
 }
 
-function displayOption(filter: string, onselect: (value: string) => void): (str: string) => m.Lifecycle<{}, {}> {
+function displayOption(filter: string, onselect: (value: string) => void, onhover: (value: string) => void, hover: string): (str: string) => m.Lifecycle<{}, {}> {
   return function (str) {
     const [startIndex, endIndex] = matchIndex(filter, str)
-    return m('div', {
-      style: {
-        cursor: 'pointer'
-      },
-      onmousedown: () => onselect(str)
-    }, [
-      str.substring(0, startIndex),
-      m('span', {
-        style: {
-          'font-weight': 600,
-          'background-color': 'yellow'
+    return m({
+      oncreate (vnode: m.VnodeDOM<{}, {}>) {
+        if (hover === str) {
+          vnode.dom.scrollIntoView({block: 'nearest'})
         }
-      }, str.substring(startIndex, endIndex)),
-      str.substring(endIndex)
-    ])
+      },
+      view (vnode: m.Vnode<{}, {}>) {
+        return m('div', {
+          class: 'selector-dropdown-element' + ((hover === str) ? ' selector-dropdown-element-hover' : ''),
+          onmousedown: () => onselect(str),
+          onmousemove: () => onhover(str)
+        }, [
+          str.substring(0, startIndex),
+          m('span', {
+            class: 'selector-dropdown-highlight'
+          }, str.substring(startIndex, endIndex)),
+          str.substring(endIndex)
+        ])
+      }
+    })
   }
 }
 
 export default {
   view (vnode: m.Vnode<Attrs>) {
     if (!vnode.attrs.visible) { return }
-    return vnode.attrs.options
-      .map(displayOption(vnode.attrs.filter, vnode.attrs.onselect))
+    return m('.selector-dropdown', vnode.attrs.options
+      .map(displayOption(vnode.attrs.filter, vnode.attrs.onselect, vnode.attrs.onhover, vnode.attrs.hover)))
   }
 } as m.Component<Attrs>

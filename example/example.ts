@@ -12,9 +12,11 @@ const Content = {
       m('br'),
       m(Select, {
         placeholder: 'City',
-        options: ['Mountain View', 'Los Altos', 'Palo Alto'],
+        options: ['Mountain View', 'Los Altos', 'Palo Alto', 'Sunnyvale', 'San Jose', 'San Francisco', 'Berkeley'],
         onselect: (value: string) => vnode.state.value = value
-      })
+      }),
+      m('br'),
+      'Some text that should be covered by dropdown'
     ]
   }
 } as m.Component<{}, State>
