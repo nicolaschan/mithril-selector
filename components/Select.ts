@@ -4,6 +4,7 @@ import Dropdown from './Dropdown'
 interface Attrs {
   placeholder?: string,
   options: Array<string>,
+  value?: string,
   onselect: (value: string) => void
 }
 
@@ -12,7 +13,6 @@ interface State {
   selected?: string,
   focused: boolean,
   options: Array<string>,
-  value: string,
   typing: boolean,
   hover: string
 }
@@ -43,7 +43,6 @@ function keys(...each: Array<(keypress: Keypress) => void>): (keypress: Keypress
 
 function setSelection (vnode: m.Vnode<Attrs, State>, value: string) {
   if (!value) { return }
-  vnode.state.value = value
   vnode.attrs.onselect(value)
   vnode.state.filter = value
   vnode.state.typing = false
@@ -60,6 +59,12 @@ export default {
   focused: false,
   value: '',
   typing: true,
+  oninit (vnode: m.Vnode<Attrs, State>) {
+    if (vnode.attrs.value) {
+      vnode.state.filter = vnode.attrs.value
+      vnode.state.typing = false
+    }
+  },
   view (vnode: m.Vnode<Attrs, State>) {
     const options = (vnode.state.typing) ?
       vnode.attrs.options.filter(includesNoCase(vnode.state.filter)) :
@@ -68,6 +73,8 @@ export default {
       vnode.state.hover = options[0]
     }
     return m('.selector', [m('input[type=text]', {
+      autocomplete: false,
+      spellcheck: false,
       class: (options.length > 0) ? undefined : 'selector-textbox-invalid',
       style: {
         'font-weight': (vnode.state.typing) ? 400 : 600
@@ -85,12 +92,14 @@ export default {
       },
       onblur: (e: any) => {
         vnode.state.focused = false
-        vnode.state.filter = vnode.state.value
+        vnode.state.filter = vnode.attrs.value || ''
         vnode.state.typing = !vnode.state.filter
       },
       onkeypress: keys(onKey('Enter', (e: any) => {
         e.target.blur()
-        setSelection(vnode, vnode.state.hover) 
+        if (options.length > 0) {
+          setSelection(vnode, vnode.state.hover) 
+        }
       }), onKey('Backspace', () => {
         if (!vnode.state.typing) {
           vnode.state.filter = ''

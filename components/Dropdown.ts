@@ -27,7 +27,12 @@ function displayOption(filter: string, onselect: (value: string) => void, onhove
       view (vnode: m.Vnode<{}, {}>) {
         return m('div', {
           class: 'selector-dropdown-element' + ((hover === str) ? ' selector-dropdown-element-hover' : ''),
-          onmousedown: () => onselect(str),
+          onmousedown: (e: any) => {
+            // Only respond to left click
+            if (e.buttons === 1) {
+              onselect(str)
+            }
+          },
           onmousemove: () => onhover(str)
         }, [
           str.substring(0, startIndex),

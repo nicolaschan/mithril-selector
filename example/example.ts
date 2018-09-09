@@ -11,7 +11,8 @@ const Content = {
       m('div', `Current value: ${vnode.state.value}`),
       m('br'),
       m(Select, {
-        placeholder: 'City',
+        value: vnode.state.value,
+        placeholder: 'Select',
         options: [
           'Option One',
           'Option Two',
