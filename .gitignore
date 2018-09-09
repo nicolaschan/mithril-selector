@@ -1,5 +1,6 @@
 # Ignore compiled output
 example/bin/*
+style/bin/*
 
 # Logs
 logs
