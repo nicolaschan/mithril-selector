@@ -1,5 +1,9 @@
 # mithril-selector
-Auto-completing, typing based select component for [Mithril.js](https://mithril.js.org/). Inspired by [selectize.js](https://selectize.github.io/selectize.js/), which has more features but uses JQuery.
+Select component for [Mithril.js](https://mithril.js.org/) with auto-completion. Inspired by [selectize.js](https://selectize.github.io/selectize.js/), which has more features but requires JQuery.
+
+- Suggest options as you type
+- Override CSS as you like
+- TypeScript support
 
 ## Usage
 ```javascript
