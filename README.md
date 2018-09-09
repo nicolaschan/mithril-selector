@@ -9,9 +9,9 @@ const Component = {
   view: function (vnode) {
     return m(Select, {
       placeholder: 'City',
-      options: ['Mountain View', 'Los Altos', 'Palo Alto'],
+      options: ['Option One', 'Option Two', 'Option Three'],
       onselect: value => {
-        // handle value selection change
+        // Handle value selection change
       }
     })
   }
