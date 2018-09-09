@@ -44,8 +44,6 @@ function keys(...each: Array<(keypress: Keypress) => void>): (keypress: Keypress
 function setSelection (vnode: m.Vnode<Attrs, State>, value: string) {
   if (!value) { return }
   vnode.attrs.onselect(value)
-  vnode.state.filter = value
-  vnode.state.typing = false
 }
 
 function setHover (vnode: m.Vnode<Attrs, State>, value: string) {
@@ -59,7 +57,7 @@ export default {
   focused: false,
   value: '',
   typing: true,
-  oninit (vnode: m.Vnode<Attrs, State>) {
+  onbeforeupdate (vnode: m.Vnode<Attrs, State>) {
     if (vnode.attrs.value) {
       vnode.state.filter = vnode.attrs.value
       vnode.state.typing = false
@@ -99,7 +97,7 @@ export default {
       },
       onblur: (e: any) => {
         vnode.state.focused = false
-        vnode.state.filter = vnode.attrs.value || ''
+        // vnode.state.filter = vnode.attrs.value || ''
         vnode.state.typing = !vnode.state.filter
       },
       onkeypress: keys(onKey('Enter', (e: any) => {
