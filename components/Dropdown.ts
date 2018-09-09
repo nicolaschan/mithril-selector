@@ -20,7 +20,7 @@ function displayOption(filter: string, onselect: (value: string) => void): (str:
       style: {
         cursor: 'pointer'
       },
-      onclick: () => onselect(str)
+      onmousedown: () => onselect(str)
     }, [
       str.substring(0, startIndex),
       m('span', {

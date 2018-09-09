@@ -40,6 +40,14 @@ function keys(...each: Array<(keypress: Keypress) => void>): (keypress: Keypress
   }
 }
 
+function setSelection (vnode: m.Vnode<Attrs, State>, value: string) {
+  if (!value) { return }
+  vnode.state.value = value
+  vnode.attrs.onselect(value)
+  vnode.state.filter = value
+  vnode.state.typing = false
+}
+
 export default {
   filter: '',
   selected: undefined,
@@ -61,20 +69,17 @@ export default {
         }
       }),
       value: vnode.state.filter,
-      onfocus: () => vnode.state.focused = true,
+      onfocus: (e: any) => {
+        vnode.state.focused = true
+      },
       onblur: (e: any) => {
         vnode.state.focused = false
         vnode.state.filter = vnode.state.value
-        vnode.state.typing = false
+        vnode.state.typing = !vnode.state.filter
       },
       onkeypress: keys(onKey('Enter', (e: any) => {
-        const value = options[0]
-        if (!value) { return }
         e.target.blur()
-        vnode.state.value = value
-        vnode.attrs.onselect(value)
-        vnode.state.filter = value
-        vnode.state.typing = false
+        setSelection(vnode, options[0]) 
       }), onKey('Backspace', () => {
         if (!vnode.state.typing) {
           vnode.state.filter = ''
@@ -85,7 +90,9 @@ export default {
       visible: vnode.state.focused,
       options: options,
       filter: vnode.state.filter,
-      onselect: console.log
+      onselect: (value: string) => {
+        setSelection(vnode, value)
+      }
     })])
   }
 } as m.Component<Attrs, State>
