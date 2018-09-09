@@ -56,9 +56,9 @@ export default {
   selected: undefined,
   focused: false,
   value: '',
-  typing: true,
+  typing: false,
   onbeforeupdate (vnode: m.Vnode<Attrs, State>) {
-    if (vnode.attrs.value) {
+    if (vnode.attrs.value && !vnode.state.typing) {
       vnode.state.filter = vnode.attrs.value
       vnode.state.typing = false
     }
@@ -75,7 +75,7 @@ export default {
       spellcheck: false,
       class: (options.length > 0) ? undefined : 'selector-textbox-invalid',
       style: {
-        'font-weight': (vnode.state.typing) ? 400 : 600,
+        'font-weight': (!vnode.state.filter || vnode.state.typing) ? 400 : 600,
         cursor: 'pointer'
       },
       placeholder: vnode.attrs.placeholder,
@@ -97,8 +97,7 @@ export default {
       },
       onblur: (e: any) => {
         vnode.state.focused = false
-        // vnode.state.filter = vnode.attrs.value || ''
-        vnode.state.typing = !vnode.state.filter
+        vnode.state.typing = false
       },
       onkeypress: keys(onKey('Enter', (e: any) => {
         e.target.blur()
