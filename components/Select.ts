@@ -73,7 +73,13 @@ export default {
     return m('.selector', [m('input[type=text]', {
       autocomplete: false,
       spellcheck: false,
-      class: (options.length > 0) ? undefined : 'selector-textbox-invalid',
+      class: [{
+        condition: options.length === 0,
+        class: 'selector-textbox-invalid'
+      }, {
+        condition: vnode.state.filter && !vnode.state.typing,
+        class: 'selector-textbox-selected'
+      }].filter(c => c.condition).map(c => c.class).join(' '),
       style: {
         'font-weight': (!vnode.state.filter || vnode.state.typing) ? 400 : 600,
         cursor: 'pointer'
@@ -94,6 +100,9 @@ export default {
       },
       onfocus: (e: any) => {
         vnode.state.focused = true
+        if (!vnode.state.filter) {
+          vnode.state.typing = true
+        }
       },
       onblur: (e: any) => {
         vnode.state.focused = false

@@ -1,0 +1,22 @@
+$highlight-color: yellow;
+$hover-color: #ddd;
+$invalid-color: red;
+
+.selector {
+  .selector-textbox-invalid {
+    color: $invalid-color;
+  }
+
+  .selector-dropdown-element {
+    cursor: pointer;
+  }
+  
+  .selector-dropdown-element-hover {
+    background-color: $hover-color;
+  }
+
+  .selector-dropdown-highlight {
+    background-color: $highlight-color;
+    font-weight: 600;
+  }
+}

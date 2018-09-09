@@ -1,24 +1,31 @@
 @import 'positions';
+@import 'colors';
 
-$highlight-color: yellow;
-$hover-color: #ddd;
-$invalid-color: red;
+$font-size: 1em;
+$font-family: Roboto, Helvetica, sans-serif;
 
 .selector {
-  .selector-textbox-invalid {
-    color: $invalid-color;
+  font-size: $font-size;
+  font-family: $font-family;
+
+  .selector-textbox-selected {
+    color: black;
+  }
+
+  input {
+    font-size: $font-size;
+    padding: 0.25em;
+    border-radius: 0;
+    border: 1px solid #ddd;
+    width: 16em;
+    transition: border-color 0.1s ease;
+  }
+
+  input:focus {
+    border-color: darkturquoise;
   }
 
   .selector-dropdown-element {
-    cursor: pointer;
-  }
-  
-  .selector-dropdown-element-hover {
-    background-color: $hover-color;
-  }
-
-  .selector-dropdown-highlight {
-    background-color: $highlight-color;
-    font-weight: 600;
+    padding: 0.25em;
   }
 }
