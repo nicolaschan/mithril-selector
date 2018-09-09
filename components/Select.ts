@@ -50,7 +50,7 @@ export default {
     const options = (vnode.state.typing) ?
       vnode.attrs.options.filter(includesNoCase(vnode.state.filter)) :
       vnode.attrs.options
-    return [m('input[type=text]', {
+    return m('div', [m('input[type=text]', {
       style: {
         'font-weight': (vnode.state.typing) ? 400 : 600
       },
@@ -62,14 +62,15 @@ export default {
       }),
       value: vnode.state.filter,
       onfocus: () => vnode.state.focused = true,
-      onblur: () => {
+      onblur: (e: any) => {
         vnode.state.focused = false
         vnode.state.filter = vnode.state.value
         vnode.state.typing = false
       },
-      onkeypress: keys(onKey('Enter', () => {
+      onkeypress: keys(onKey('Enter', (e: any) => {
         const value = options[0]
         if (!value) { return }
+        e.target.blur()
         vnode.state.value = value
         vnode.attrs.onselect(value)
         vnode.state.filter = value
@@ -85,6 +86,6 @@ export default {
       options: options,
       filter: vnode.state.filter,
       onselect: console.log
-    })]
+    })])
   }
 } as m.Component<Attrs, State>

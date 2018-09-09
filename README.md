@@ -1,5 +1,5 @@
 # mithril-selector
-Mithril select element with auto-complete
+Auto-completing, typing based select component for [Mithril.js](https://mithril.js.org/). Inspired by [selectize.js](https://selectize.github.io/selectize.js/), which has more features but uses JQuery.
 
 ## Usage
 ```javascript
