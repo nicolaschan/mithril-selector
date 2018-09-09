@@ -1,8 +1,13 @@
 $highlight-color: yellow;
 $hover-color: #ddd;
+$invalid-color: red;
 
 .selector {
   position: fixed;
+}
+
+.selector-textbox-invalid {
+  color: $invalid-color;
 }
 
 .selector-dropdown {

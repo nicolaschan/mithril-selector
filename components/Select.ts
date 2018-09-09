@@ -68,6 +68,7 @@ export default {
       vnode.state.hover = options[0]
     }
     return m('.selector', [m('input[type=text]', {
+      class: (options.length > 0) ? undefined : 'selector-textbox-invalid',
       style: {
         'font-weight': (vnode.state.typing) ? 400 : 600
       },
