@@ -34,8 +34,10 @@ function onKey(key: string, f: (keypress: Keypress) => void): (keypress: Keypres
   }
 }
 
-function keys() {
-
+function keys(...each: Array<(keypress: Keypress) => void>): (keypress: Keypress) => void {
+  return function (keypress) {
+    each.map(f => f(keypress))
+  }
 }
 
 export default {
@@ -45,34 +47,41 @@ export default {
   value: '',
   typing: true,
   view (vnode: m.Vnode<Attrs, State>) {
-    const options = vnode.attrs.options
-      .filter(includesNoCase(vnode.state.filter))
+    const options = (vnode.state.typing) ?
+      vnode.attrs.options.filter(includesNoCase(vnode.state.filter)) :
+      vnode.attrs.options
     return [m('input[type=text]', {
       style: {
         'font-weight': (vnode.state.typing) ? 400 : 600
       },
       placeholder: vnode.attrs.placeholder,
       oninput: m.withAttr('value', value => {
-        if (!vnode.state.typing) {
-          vnode.state.filter = ''
-          vnode.state.typing = true
-        } else {
+        if (vnode.state.typing) {
           vnode.state.filter = value
         }
       }),
       value: vnode.state.filter,
       onfocus: () => vnode.state.focused = true,
-      onblur: () => vnode.state.focused = false,
-      onkeypress: onKey('Enter', () => {
+      onblur: () => {
+        vnode.state.focused = false
+        vnode.state.filter = vnode.state.value
+        vnode.state.typing = false
+      },
+      onkeypress: keys(onKey('Enter', () => {
         const value = options[0]
         if (!value) { return }
         vnode.state.value = value
         vnode.attrs.onselect(value)
         vnode.state.filter = value
         vnode.state.typing = false
-      })
+      }), onKey('Backspace', () => {
+        if (!vnode.state.typing) {
+          vnode.state.filter = ''
+          vnode.state.typing = true
+        }
+      }))
     }), m(Dropdown, {
-      visible: vnode.state.focused && vnode.state.typing,
+      visible: vnode.state.focused,
       options: options,
       filter: vnode.state.filter,
       onselect: console.log
