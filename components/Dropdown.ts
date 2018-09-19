@@ -1,12 +1,13 @@
 import * as m from 'mithril'
+import { Option } from './Select' 
 
 interface Attrs {
   visible: boolean,
-  options: Array<string>,
+  options: Array<Option>,
   filter: string,
-  onselect: (value: string) => void,
-  onhover: (value: string) => void,
-  hover: string
+  onselect: (option: Option) => void,
+  onhover: (option: Option) => void,
+  hover: Option 
 }
 
 function matchIndex(filter: string, str: string): [number, number] {
@@ -15,25 +16,26 @@ function matchIndex(filter: string, str: string): [number, number] {
   return [startIndex, endIndex]
 }
 
-function displayOption(filter: string, onselect: (value: string) => void, onhover: (value: string) => void, hover: string): (str: string) => m.Lifecycle<{}, {}> {
-  return function (str) {
+function displayOption(filter: string, onselect: (option: Option) => void, onhover: (option: Option) => void, hover: Option): (option: Option) => m.Lifecycle<{}, {}> {
+  return function (option: Option) {
+    const str = option.display
     const [startIndex, endIndex] = matchIndex(filter, str)
     return m({
       oncreate (vnode: m.VnodeDOM<{}, {}>) {
-        if (hover === str) {
+        if (hover === option) {
           vnode.dom.scrollIntoView({block: 'nearest'})
         }
       },
       view (vnode: m.Vnode<{}, {}>) {
         return m('div', {
-          class: 'selector-dropdown-element' + ((hover === str) ? ' selector-dropdown-element-hover' : ''),
+          class: 'selector-dropdown-element' + ((hover === option) ? ' selector-dropdown-element-hover' : ''),
           onmousedown: (e: any) => {
             // Only respond to left click
             if (e.buttons === 1) {
-              onselect(str)
+              onselect(option)
             }
           },
-          onmousemove: () => onhover(str)
+          onmousemove: () => onhover(option)
         }, [
           str.substring(0, startIndex),
           m('span', {

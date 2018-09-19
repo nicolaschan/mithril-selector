@@ -1,20 +1,24 @@
 import * as m from 'mithril'
 import Dropdown from './Dropdown'
 
+export interface Option {
+  display: string,
+  value: string
+}
+
 interface Attrs {
   placeholder?: string,
-  options: Array<string>,
+  options: Array<Option | string>, 
   value?: string,
   onselect: (value: string) => void
 }
 
 interface State {
   filter: string,
-  selected?: string,
   focused: boolean,
-  options: Array<string>,
+  options: Array<Option>,
   typing: boolean,
-  hover: string
+  hover: Option 
 }
 
 interface Keypress {
@@ -23,9 +27,9 @@ interface Keypress {
   keyCode: number
 }
 
-function includesNoCase(filter: string = ''): (str: string) => boolean {
-  return function (str) {
-    return str.toLowerCase().includes(filter.trim().toLowerCase())
+function includesNoCase(filter: string = ''): (option: Option) => boolean {
+  return function (option) {
+    return option.display.toLowerCase().includes(filter.trim().toLowerCase())
   }
 }
 
@@ -46,27 +50,44 @@ function setSelection (vnode: m.Vnode<Attrs, State>, value: string) {
   vnode.attrs.onselect(value)
 }
 
-function setHover (vnode: m.Vnode<Attrs, State>, value: string) {
-  if (!value) { return }
-  vnode.state.hover = value
+function setHover (vnode: m.Vnode<Attrs, State>, option: Option) {
+  if (!option) { return }
+  vnode.state.hover = option 
+}
+
+function findByValue(options: Array<Option>, value: string) {
+  return options.filter(option => option.value === value)[0]
+}
+
+function toOption (option: Option | string): Option {
+  if (typeof option === 'string') {
+    return {
+      display: option,
+      value: option
+    }
+  }
+  return option
 }
 
 export default {
   filter: '',
-  selected: undefined,
   focused: false,
   value: '',
   typing: false,
+  options: [],
+  oninit (vnode: m.Vnode<Attrs, State>) {
+    vnode.state.options = vnode.attrs.options.map(toOption)
+  },
   onbeforeupdate (vnode: m.Vnode<Attrs, State>) {
     if (vnode.attrs.value && !vnode.state.typing) {
-      vnode.state.filter = vnode.attrs.value
+      vnode.state.filter = findByValue(vnode.state.options, vnode.attrs.value).display
       vnode.state.typing = false
     }
   },
   view (vnode: m.Vnode<Attrs, State>) {
     const options = (vnode.state.typing) ?
-      vnode.attrs.options.filter(includesNoCase(vnode.state.filter)) :
-      vnode.attrs.options
+      vnode.state.options.filter(includesNoCase(vnode.state.filter)) :
+     vnode.state.options 
     if (options.indexOf(vnode.state.hover) < 0) {
       vnode.state.hover = options[0]
     }
@@ -111,7 +132,7 @@ export default {
       onkeypress: keys(onKey('Enter', (e: any) => {
         e.target.blur()
         if (options.length > 0) {
-          setSelection(vnode, vnode.state.hover) 
+          setSelection(vnode, vnode.state.hover.value) 
         }
       }), onKey('Backspace', () => {
         if (!vnode.state.typing) {
@@ -128,11 +149,11 @@ export default {
       options: options,
       filter: (vnode.state.typing) ? vnode.state.filter : '',
       hover: vnode.state.hover,
-      onselect: (value: string) => {
-        setSelection(vnode, value)
+      onselect: (option: Option) => {
+        setSelection(vnode, option.value)
       },
-      onhover: (value: string) => {
-        setHover(vnode, value)
+      onhover: (option: Option) => {
+        setHover(vnode, option)
       }
     })])
   }
