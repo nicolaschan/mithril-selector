@@ -1,14 +1,14 @@
 import * as m from 'mithril'
 import Dropdown from './Dropdown'
 
-export interface Option {
+export interface ISelectOption {
   display: string,
   value: string
 }
 
 interface Attrs {
   placeholder?: string,
-  options: Array<Option | string>, 
+  options: Array<ISelectOption | string>, 
   value?: string,
   onselect: (value: string) => void
 }
@@ -16,9 +16,9 @@ interface Attrs {
 interface State {
   filter: string,
   focused: boolean,
-  options: Array<Option>,
+  options: Array<ISelectOption>,
   typing: boolean,
-  hover: Option 
+  hover: ISelectOption 
 }
 
 interface Keypress {
@@ -27,7 +27,7 @@ interface Keypress {
   keyCode: number
 }
 
-function includesNoCase(filter: string = ''): (option: Option) => boolean {
+function includesNoCase(filter: string = ''): (option: ISelectOption) => boolean {
   return function (option) {
     return option.display.toLowerCase().includes(filter.trim().toLowerCase())
   }
@@ -50,16 +50,16 @@ function setSelection (vnode: m.Vnode<Attrs, State>, value: string) {
   vnode.attrs.onselect(value)
 }
 
-function setHover (vnode: m.Vnode<Attrs, State>, option: Option) {
+function setHover (vnode: m.Vnode<Attrs, State>, option: ISelectOption) {
   if (!option) { return }
   vnode.state.hover = option 
 }
 
-function findByValue(options: Array<Option>, value: string) {
+function findByValue(options: Array<ISelectOption>, value: string) {
   return options.filter(option => option.value === value)[0]
 }
 
-function toOption (option: Option | string): Option {
+function toISelectOption (option: ISelectOption | string): ISelectOption {
   if (typeof option === 'string') {
     return {
       display: option,
@@ -69,14 +69,14 @@ function toOption (option: Option | string): Option {
   return option
 }
 
-export default {
+const Select = {
   filter: '',
   focused: false,
   value: '',
   typing: false,
   options: [],
   oninit (vnode: m.Vnode<Attrs, State>) {
-    vnode.state.options = vnode.attrs.options.map(toOption)
+    vnode.state.options = vnode.attrs.options.map(toISelectOption)
   },
   onbeforeupdate (vnode: m.Vnode<Attrs, State>) {
     if (vnode.attrs.value && !vnode.state.typing) {
@@ -91,7 +91,7 @@ export default {
     if (options.indexOf(vnode.state.hover) < 0) {
       vnode.state.hover = options[0]
     }
-    return m('.selector', [m('input[type=text]', {
+    return m('span.selector', [m('input[type=text]', {
       autocomplete: false,
       spellcheck: false,
       class: [{
@@ -149,10 +149,10 @@ export default {
       options: options,
       filter: (vnode.state.typing) ? vnode.state.filter : '',
       hover: vnode.state.hover,
-      onselect: (option: Option) => {
+      onselect: (option: ISelectOption) => {
         setSelection(vnode, option.value)
       },
-      onhover: (option: Option) => {
+      onhover: (option: ISelectOption) => {
         setHover(vnode, option)
       }
     }), m('.selector-caret',  
@@ -161,3 +161,4 @@ export default {
         m('polygon[points=0,0 10,10 20,0 18,0 10,8 2,0]')))])
   }
 } as m.Component<Attrs, State>
+export { Select }

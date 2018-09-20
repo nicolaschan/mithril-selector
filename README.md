@@ -11,7 +11,7 @@ Select component for [Mithril.js](https://mithril.js.org/) with auto-completion.
 
 ## Usage
 ```javascript
-const Select = require('mithril-selector')
+const { Select } = require('mithril-selector')
 
 const Content = {
   view: function (vnode) {
@@ -29,6 +29,10 @@ const Content = {
     ]
   }
 }
+```
+```html
+<!-- CSS files are located in node_modules/mithril-selector/style/dist -->
+<link rel="stylesheet" href="default.css">
 ```
 See [the example usage](https://github.com/nicolaschan/mithril-selector/tree/master/example) for a full working example.
 

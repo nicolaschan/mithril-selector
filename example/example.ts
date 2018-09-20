@@ -1,5 +1,5 @@
 import * as m from 'mithril'
-import Select from '../components/Select'
+import { Select } from '../components/Select'
 
 interface State {
   value: string
@@ -13,8 +13,8 @@ interface SelectOption {
 const Content = {
   view (vnode: m.Vnode<{}, State>) {
     return [
-      m('div', `Current value: ${vnode.state.value}`),
-      m('br'),
+      m('span', `Current value: ${vnode.state.value}`),
+      m('br'), m('br'),
       m(Select, {
         value: vnode.state.value,
         placeholder: 'Select',
