@@ -1,7 +1,7 @@
 @import 'positions';
 @import 'colors';
 
-$font-size: 1em;
+$font-size: 16px;
 $font-family: Roboto, Helvetica, sans-serif;
 
 $padding: 0.5em;
@@ -18,10 +18,15 @@ $padding: 0.5em;
     font-size: 1em;
     font-size: $font-size;
     padding: $padding;
+    border-radius: 0;
+    border: 1px solid #ddd;
     width: 16em;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.1s ease;
   }
 
+  input:focus {
+    border-color: darkturquoise;
+  }
 
   .selector-dropdown {
     border: 1px solid #ddd;
