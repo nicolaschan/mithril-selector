@@ -1,14 +1,16 @@
 {
   "name": "mithril-selector",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Mithril select element with auto-complete as you type",
-  "main": "index.js",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
   "repository": "git@github.com:nicolaschan/mithril-selector.git",
   "author": "Nicolas Chan <nicolas@nicolaschan.com>",
   "license": "MIT",
   "scripts": {
     "build-example": "yarn build-css && cd example && ../node_modules/.bin/webpack --config webpack.config.js",
-    "build-css": "sass style/default.scss style/bin/default.css"
+    "build-css": "sass style/default.scss style/dist/default.css",
+    "prepublishOnly": "sass style/default.scss style/dist/default.min.css --style compressed && tsc -d -p ./ --outDir dist/"
   },
   "dependencies": {
     "@types/mithril": "^1.1.12",
@@ -20,5 +22,11 @@
     "typescript": "^3.0.3",
     "webpack": "^4.17.2",
     "webpack-cli": "^3.1.0"
-  }
+  },
+  "keywords": [
+    "mithril",
+    "component",
+    "select",
+    "selector"
+  ]
 }
