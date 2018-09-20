@@ -28,6 +28,10 @@ $padding: 0.5em;
     border-color: darkturquoise;
   }
 
+  .selector-dropdown {
+    border: 1px solid #ddd;
+  }
+
   .selector-dropdown-element {
     padding: $padding;
     font-size: $font-size;
