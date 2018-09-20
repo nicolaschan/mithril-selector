@@ -9,15 +9,20 @@ Select component for [Mithril.js](https://mithril.js.org/) with auto-completion.
 ```javascript
 const Select = require('mithril-selector')
 
-const Component = {
+const Content = {
   view: function (vnode) {
-    return m(Select, {
-      placeholder: 'City',
-      options: ['Option One', 'Option Two', 'Option Three'],
-      onselect: value => {
-        // Handle value selection change
-      }
-    })
+    return [
+      m('div', `Current value: ${vnode.state.value}`),
+      m('br'),
+      m(Select, {
+        value: vnode.state.value,
+        placeholder: 'Select',
+        options: [
+          'Option One', 'Option Two', 'Option Three'
+        ],
+        onselect: (value) => vnode.state.value = value
+      })
+    ]
   }
 }
 ```
