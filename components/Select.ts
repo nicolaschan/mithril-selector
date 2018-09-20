@@ -155,7 +155,9 @@ export default {
       onhover: (option: Option) => {
         setHover(vnode, option)
       }
-    }), m('.selector-caret',  m('svg[viewBox=0,0,20,10]', (vnode.state.focused) ? m('polygon[points=0,10 10,0 20,10, 18,10, 10,2 2,10]') :
-      m('svg', m('polygon[points=0,0 10,10 20,0 18,0 10,8 2,0]')))])
+    }), m('.selector-caret',  
+      m('svg[viewBox=0,0,20,10]', (vnode.state.focused) ? 
+        m('polygon[points=0,10 10,0 20,10, 18,10, 10,2 2,10]') :
+        m('polygon[points=0,0 10,10 20,0 18,0 10,8 2,0]')))])
   }
 } as m.Component<Attrs, State>
