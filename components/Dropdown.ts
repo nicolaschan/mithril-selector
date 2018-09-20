@@ -51,6 +51,7 @@ function displayOption(filter: string, onselect: (option: Option) => void, onhov
 export default {
   view (vnode: m.Vnode<Attrs>) {
     if (!vnode.attrs.visible) { return }
+    if (vnode.attrs.options.length < 1) { return }
     return m('.selector-dropdown', vnode.attrs.options
       .map(displayOption(vnode.attrs.filter, vnode.attrs.onselect, vnode.attrs.onhover, vnode.attrs.hover)))
   }
