@@ -5,6 +5,10 @@ Select component for [Mithril.js](https://mithril.js.org/) with auto-completion.
 - Override CSS as you like
 - TypeScript support
 
+<p align="center">
+  <img src="https://i.imgur.com/QbU2f6r.gif" width="290px" height="208px">
+</p>
+
 ## Usage
 ```javascript
 const Select = require('mithril-selector')
