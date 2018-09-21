@@ -1,6 +1,6 @@
 {
   "name": "mithril-selector",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Mithril select element with auto-complete as you type",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
@@ -12,8 +12,7 @@
     "build-css": "sass style/default.scss style/dist/default.css",
     "prepublishOnly": "sass style/default.scss style/dist/default.min.css --style compressed && tsc -d -p ./ --outDir dist/"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/mithril": "^1.1.12",
     "mithril": "^1.1.6",
