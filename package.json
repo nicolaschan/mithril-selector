@@ -13,10 +13,10 @@
     "prepublishOnly": "sass style/default.scss style/dist/default.min.css --style compressed && tsc -d -p ./ --outDir dist/"
   },
   "dependencies": {
-    "@types/mithril": "^1.1.12",
-    "mithril": "^1.1.6"
   },
   "devDependencies": {
+    "@types/mithril": "^1.1.12",
+    "mithril": "^1.1.6",
     "sass": "^1.13.2",
     "ts-loader": "^5.0.0",
     "typescript": "^3.0.3",
