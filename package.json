@@ -1,6 +1,6 @@
 {
   "name": "mithril-selector",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Mithril select element with auto-complete as you type",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
