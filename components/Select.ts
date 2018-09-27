@@ -18,7 +18,7 @@ interface State {
   focused: boolean,
   options: Array<ISelectOption>,
   typing: boolean,
-  hover: ISelectOption ,
+  hover: string,
   justOpened: boolean
 }
 
@@ -53,11 +53,15 @@ function setSelection (vnode: m.Vnode<Attrs, State>, value: string) {
 
 function setHover (vnode: m.Vnode<Attrs, State>, option: ISelectOption) {
   if (!option) { return }
-  vnode.state.hover = option 
+  vnode.state.hover = option.value
 }
 
 function findByValue(options: Array<ISelectOption>, value: string) {
   return options.filter(option => option.value === value)[0]
+}
+
+function indexByValue(options: Array<ISelectOption>, value: string) {
+  return options.map(option => option.value).indexOf(value)
 }
 
 function toISelectOption (option: ISelectOption | string): ISelectOption {
@@ -76,24 +80,25 @@ const Select = {
   value: '',
   typing: false,
   options: [],
-  justOpened: false,
-  oninit (vnode: m.Vnode<Attrs, State>) {
-    vnode.state.options = vnode.attrs.options.map(toISelectOption)
-  },
-  onbeforeupdate (vnode: m.Vnode<Attrs, State>) {
-    if (vnode.attrs.value && !vnode.state.typing) {
-      const value = findByValue(vnode.state.options, vnode.attrs.value)
-      vnode.state.filter = value ? value.display : ''
-      vnode.state.typing = false
-    }
-  },
+  justOpened: true,
   view (vnode: m.Vnode<Attrs, State>) {
     const options = (vnode.state.typing) ?
-      vnode.state.options.filter(includesNoCase(vnode.state.filter)) :
-     vnode.state.options 
-    if (options.indexOf(vnode.state.hover) < 0) {
-      vnode.state.hover = options[0]
+      vnode.attrs.options
+        .map(toISelectOption)
+        .filter(includesNoCase(vnode.state.filter)) :
+      vnode.attrs.options
+        .map(toISelectOption)
+    if (vnode.attrs.value && !vnode.state.typing) {
+      const option = findByValue(options, vnode.attrs.value)
+      vnode.state.filter = option ? option.display : ''
+      if (option && vnode.state.justOpened) {
+        vnode.state.hover = option.value
+      }
     }
+    if (options.map(option => option.value).indexOf(vnode.state.hover) < 0) {
+      vnode.state.hover = options[0] ? options[0].value : ''
+    }
+
     return m('span.selector', [m('input[type=text]', {
       autocomplete: false,
       spellcheck: false,
@@ -112,7 +117,7 @@ const Select = {
       oninput: m.withAttr('value', value => {
         if (vnode.state.typing) {
           vnode.state.filter = value
-          vnode.state.hover = options[0]
+          vnode.state.hover = options[0].value
         }
       }),
       value: vnode.state.filter,
@@ -136,7 +141,7 @@ const Select = {
       onkeydown: keys(onKey('Enter', (e: any) => {
         e.target.blur()
         if (options.length > 0) {
-          setSelection(vnode, vnode.state.hover.value) 
+          setSelection(vnode, vnode.state.hover) 
         }
       }), onKey('Backspace', () => {
         if (!vnode.state.typing) {
@@ -144,9 +149,9 @@ const Select = {
           vnode.state.typing = true
         }
       }), onKey('ArrowUp', () => {
-        vnode.state.hover = options[Math.max(options.indexOf(vnode.state.hover) - 1, 0)]
+        vnode.state.hover = options[Math.max(indexByValue(options, vnode.state.hover) - 1, 0)].value
       }), onKey('ArrowDown', () => {
-        vnode.state.hover = options[Math.min(options.indexOf(vnode.state.hover) + 1, options.length - 1)]
+        vnode.state.hover = options[Math.min(indexByValue(options, vnode.state.hover) + 1, options.length - 1)].value
       }))
     }), m(Dropdown, {
       visible: vnode.state.focused,

@@ -7,7 +7,7 @@ interface Attrs {
   filter: string,
   onselect: (option: ISelectOption) => void,
   onhover: (option: ISelectOption) => void,
-  hover: ISelectOption,
+  hover: string,
   justOpened: boolean 
 }
 
@@ -21,7 +21,7 @@ function displayISelectOption(
   filter: string, 
   onselect: (option: ISelectOption) => void, 
   onhover: (option: ISelectOption) => void, 
-  hover: ISelectOption,
+  hover: string,
   justOpened: boolean
   ): (option: ISelectOption) => m.Lifecycle<{}, {}> {
   return function (option: ISelectOption) {
@@ -29,13 +29,13 @@ function displayISelectOption(
     const [startIndex, endIndex] = matchIndex(filter, str)
     return m({
       oncreate (vnode: m.VnodeDOM<{}, {}>) {
-        if (justOpened && (hover === option)) {
+        if (justOpened && (hover === option.value)) {
           vnode.dom.scrollIntoView({block: 'start'})
         }
       },
       view (vnode: m.Vnode<{}, {}>) {
         return m('div', {
-          class: 'selector-dropdown-element' + ((hover === option) ? ' selector-dropdown-element-hover' : ''),
+          class: 'selector-dropdown-element' + ((hover === option.value) ? ' selector-dropdown-element-hover' : ''),
           onmousedown: (e: any) => {
             // Only respond to left click
             if (e.buttons === 1) {

@@ -18,9 +18,7 @@ const Content = {
       m(Select, {
         value: vnode.state.value,
         placeholder: 'Select',
-        options: [
-          'Option One', 'Option Two', 'Option Three', 'Option Four', 'Option Five'
-        ],
+        options: ['Option One', 'Option Two', 'Option Three', 'Option Four', 'Option Five'], 
         onselect: (value: string) => vnode.state.value = value
       })
     ]
