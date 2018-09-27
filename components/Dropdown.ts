@@ -7,7 +7,8 @@ interface Attrs {
   filter: string,
   onselect: (option: ISelectOption) => void,
   onhover: (option: ISelectOption) => void,
-  hover: ISelectOption 
+  hover: ISelectOption,
+  justOpened: boolean 
 }
 
 function matchIndex(filter: string, str: string): [number, number] {
@@ -16,14 +17,20 @@ function matchIndex(filter: string, str: string): [number, number] {
   return [startIndex, endIndex]
 }
 
-function displayISelectOption(filter: string, onselect: (option: ISelectOption) => void, onhover: (option: ISelectOption) => void, hover: ISelectOption): (option: ISelectOption) => m.Lifecycle<{}, {}> {
+function displayISelectOption(
+  filter: string, 
+  onselect: (option: ISelectOption) => void, 
+  onhover: (option: ISelectOption) => void, 
+  hover: ISelectOption,
+  justOpened: boolean
+  ): (option: ISelectOption) => m.Lifecycle<{}, {}> {
   return function (option: ISelectOption) {
     const str = option.display
     const [startIndex, endIndex] = matchIndex(filter, str)
     return m({
       oncreate (vnode: m.VnodeDOM<{}, {}>) {
-        if (hover === option) {
-          vnode.dom.scrollIntoView({block: 'nearest'})
+        if (justOpened && (hover === option)) {
+          vnode.dom.scrollIntoView({block: 'start'})
         }
       },
       view (vnode: m.Vnode<{}, {}>) {
@@ -35,7 +42,7 @@ function displayISelectOption(filter: string, onselect: (option: ISelectOption) 
               onselect(option)
             }
           },
-          onmousemove: () => onhover(option)
+          onmouseover: () => onhover(option)
         }, [
           str.substring(0, startIndex),
           m('span', {
@@ -53,6 +60,12 @@ export default {
     if (!vnode.attrs.visible) { return }
     if (vnode.attrs.options.length < 1) { return }
     return m('.selector-dropdown', vnode.attrs.options
-      .map(displayISelectOption(vnode.attrs.filter, vnode.attrs.onselect, vnode.attrs.onhover, vnode.attrs.hover)))
+      .map(displayISelectOption(
+        vnode.attrs.filter,
+        vnode.attrs.onselect,
+        vnode.attrs.onhover,
+        vnode.attrs.hover,
+        vnode.attrs.justOpened
+      )))
   }
 } as m.Component<Attrs>

@@ -18,7 +18,8 @@ interface State {
   focused: boolean,
   options: Array<ISelectOption>,
   typing: boolean,
-  hover: ISelectOption 
+  hover: ISelectOption ,
+  justOpened: boolean
 }
 
 interface Keypress {
@@ -75,12 +76,14 @@ const Select = {
   value: '',
   typing: false,
   options: [],
+  justOpened: false,
   oninit (vnode: m.Vnode<Attrs, State>) {
     vnode.state.options = vnode.attrs.options.map(toISelectOption)
   },
   onbeforeupdate (vnode: m.Vnode<Attrs, State>) {
     if (vnode.attrs.value && !vnode.state.typing) {
-      vnode.state.filter = findByValue(vnode.state.options, vnode.attrs.value).display
+      const value = findByValue(vnode.state.options, vnode.attrs.value)
+      vnode.state.filter = value ? value.display : ''
       vnode.state.typing = false
     }
   },
@@ -121,6 +124,7 @@ const Select = {
       },
       onfocus: (e: any) => {
         vnode.state.focused = true
+        vnode.state.justOpened = true
         if (!vnode.state.filter) {
           vnode.state.typing = true
         }
@@ -129,7 +133,7 @@ const Select = {
         vnode.state.focused = false
         vnode.state.typing = false
       },
-      onkeypress: keys(onKey('Enter', (e: any) => {
+      onkeydown: keys(onKey('Enter', (e: any) => {
         e.target.blur()
         if (options.length > 0) {
           setSelection(vnode, vnode.state.hover.value) 
@@ -154,11 +158,15 @@ const Select = {
       },
       onhover: (option: ISelectOption) => {
         setHover(vnode, option)
-      }
+      },
+      justOpened: vnode.state.justOpened
     }), m('.selector-caret',  
       m('svg[viewBox=0,0,20,10]', (vnode.state.focused) ? 
         m('polygon[points=0,10 10,0 20,10, 18,10, 10,2 2,10]') :
         m('polygon[points=0,0 10,10 20,0 18,0 10,8 2,0]')))])
+  },
+  onupdate (vnode: m.Vnode<Attrs, State>) {
+    vnode.state.justOpened = false
   }
 } as m.Component<Attrs, State>
 export { Select }
