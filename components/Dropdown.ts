@@ -42,7 +42,7 @@ function displayISelectOption(
               onselect(option)
             }
           },
-          onmouseover: () => onhover(option)
+          onmouseenter: () => onhover(option)
         }, [
           str.substring(0, startIndex),
           m('span', {

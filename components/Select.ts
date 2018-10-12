@@ -143,8 +143,9 @@ const Select = {
         if (options.length > 0) {
           setSelection(vnode, vnode.state.hover) 
         }
-      }), onKey('Backspace', () => {
+      }), onKey('Backspace', (e: any) => {
         if (!vnode.state.typing) {
+          e.preventDefault()
           vnode.state.filter = ''
           vnode.state.typing = true
         }
