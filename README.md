@@ -6,7 +6,7 @@ Select component for [Mithril.js](https://mithril.js.org/) with auto-completion.
 - TypeScript support
 
 <p align="center">
-  <img src="https://ipfs.io/ipfs/QmdEG63CTZ7J6vXgy9qpuJBRHAFVtSkEWjb1xkrCb2xjio" width="290px" height="208px">
+  <img src="https://i.imgur.com/8qiEwIE.gif" width="290px" height="208px">
 </p>
 
 ## Usage
