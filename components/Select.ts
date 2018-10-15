@@ -88,8 +88,8 @@ const Select = {
         .filter(includesNoCase(vnode.state.filter)) :
       vnode.attrs.options
         .map(toISelectOption)
+    const option = findByValue(options, vnode.attrs.value || '')
     if (vnode.attrs.value && !vnode.state.typing) {
-      const option = findByValue(options, vnode.attrs.value)
       vnode.state.filter = option ? option.display : ''
       if (option && vnode.state.justOpened) {
         vnode.state.hover = option.value
@@ -115,10 +115,9 @@ const Select = {
       },
       placeholder: vnode.attrs.placeholder,
       oninput: m.withAttr('value', value => {
-        if (vnode.state.typing) {
-          vnode.state.filter = value
-          vnode.state.hover = options[0].value
-        }
+        vnode.state.typing = true
+        vnode.state.filter = value
+        vnode.state.hover = options[0] ? options[0].value : '' 
       }),
       value: vnode.state.filter,
       onmousedown: (e: any) => {
@@ -133,6 +132,7 @@ const Select = {
         if (!vnode.state.filter) {
           vnode.state.typing = true
         }
+        e.target.select()
       },
       onblur: (e: any) => {
         vnode.state.focused = false
@@ -142,12 +142,8 @@ const Select = {
         e.target.blur()
         if (options.length > 0) {
           setSelection(vnode, vnode.state.hover) 
-        }
-      }), onKey('Backspace', (e: any) => {
-        if (!vnode.state.typing) {
-          e.preventDefault()
-          vnode.state.filter = ''
-          vnode.state.typing = true
+        } else {
+          vnode.state.filter = option ? option.display : '' 
         }
       }), onKey('ArrowUp', () => {
         vnode.state.hover = options[Math.max(indexByValue(options, vnode.state.hover) - 1, 0)].value
