@@ -115,6 +115,7 @@ const Select = {
       },
       placeholder: vnode.attrs.placeholder,
       oninput: m.withAttr('value', value => {
+        vnode.state.justOpened = true
         vnode.state.typing = true
         vnode.state.filter = value
         vnode.state.hover = options[0] ? options[0].value : '' 
